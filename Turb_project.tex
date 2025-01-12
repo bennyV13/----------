@@ -1,0 +1,79 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry} % Adjust margins as you like
+\usepackage{amsmath}    % for advanced math
+\usepackage{amssymb}    % for additional math symbols
+\usepackage{setspace}
+\usepackage{cite}
+\usepackage{enumitem}
+\onehalfspacing
+
+
+\begin{document}
+\thispagestyle{empty}
+\setlength{\parindent}{0pt}
+
+\noindent
+\includegraphics[width=2cm]{Picture1.png}%
+\hfill
+\begin{minipage}[c]{0.75\textwidth}
+  \centering
+  {\bfseries\LARGE Ben Gurion University of the Negev}\\
+\vspace{0.3cm}  
+{\bfseries\Large Faculty of Engineering Sciences}\\
+\vspace{0.3cm}
+{\bfseries\large Department of Mechanical Engineering}
+\end{minipage}
+\hfill
+\includegraphics[width=2cm]{Picture2.png}
+
+\vspace{2cm}
+
+\begin{center}
+    { \bfseries\large Research project}\\
+\end{center}
+
+\vspace{3cm}
+
+\begin{center}
+    { \bfseries\huge Turbulent Flow course Project}\\
+\vspace{1cm}
+{\large Name: Benny Vradman}\\
+\vspace{1cm}
+{\large Date: 8.1.2025}
+\end{center}
+%------------------------------------------
+\newpage
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+\section{Introduction}
+%whats swirl flow, how is it connected to turbulence.  what the project is about: 
+%investigating turbulance in combustion as an example of the effect of swirl-turbulance connection.
+The project investigates turbulence in swirl flow. Swirl flow is charactarized by a helix flow swirl number 
+
+\section{Governing equations}
+
+\subsection{dimensional analysis}
+Swirl number:
+\begin{equation}
+    S(x)=\frac{1}{R(x)}\frac{G_\theta(x)}{G_x(x)}
+\end{equation}
+where $G_\theta$ is the time average of the axial component of angular momentum of the flow, 
+$R$ is a characteristic radius of the swirling flow and %how calculated?
+$G_x$ is the time average of the flow  rate of axial momentum \cite{vignat_suitability_2022}.
+The meaning of this swirl number is a ration between the angular momentum and the axial momentum
+ of the flow, divided by the radius of the flow, at any position $x$ along the cross section of the flow.\\
+
+ connection the swirl number to Rossby number is:
+\begin{align}
+&Ro=\frac{U^*}{\Omega^*R} ,\\
+&G_\theta=\pi\rho U^*\Omega R^4,\\
+&G_x=\pi\rho U^{*2}R^2
+\end{align}
+\bibliographystyle{plain}
+\bibliography{MyLibrary} 
+
+
+
+\end{document}
