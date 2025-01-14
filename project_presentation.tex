@@ -71,7 +71,7 @@
   \begin{itemize}
     \item DNS. 
       \begin{itemize}
-        \item Heavy computational cost, proportional to $Re^{11/4}$ \cite{zouLARGEEDDYSIMULATION}.
+        \item Heavy computational cost, proportional to $Re^{11/4}$ \cite{zouLARGEEDDYSIMULATION2006}.
         \item Sensitive to IC.
         \item High order schemes are needed, which are not flexible 
         to different geometries (pseudo-spectral methods).
@@ -86,7 +86,7 @@
   \end{itemize}
 \end{frame}
 
-%------------------------------------------
+%------------------------------------------2 min
 \begin{frame}
   \frametitle{About LES}
   \begin{itemize}
@@ -95,8 +95,8 @@
      \cite{zhiyinLargeeddySimulationPresent2015} 
      %was a pioneer in combining computers and mathematical models
     \item The idea is to solve the large scales and model the small scales. 
-    \item The computational cost is proportional to $Re^{9/4}$,
-     one order of magnitude less than DNS.
+    \item The computational cost is proportional to $Re^{13/7}$,
+     one order of magnitude less than DNS \cite{choiGridpointRequirementsLarge2012}.
   \end{itemize}
 \end{frame}
 %------------------------------------------3 min
@@ -104,40 +104,100 @@
   \frametitle{The Model}
   Instead of the Reynolds decomposition, we use the filter decomposition:
   \begin{equation}
-  \phi(\mathbf{x},t) = \underbrace{\bar{\phi}(\mathbf{x},t)}_{large scale}
-   + \underbrace{\phi'(\mathbf{x},t)}_{small scale}
+  \phi(\mathbf{x},t) = \underbrace{\overline{\phi}(\mathbf{x},t)}_{\text{resolved scale}}
+   + \underbrace{\phi'(\mathbf{x},t)}_{\text{subgrid scale}}
   \end{equation}
   The filtering operation is defined as:
 \begin{equation}
-    \overline{\phi}(\mathbf{x}, t) = \int_D G(\mathbf{x} - \mathbf{x}^*, \Delta) \phi(\mathbf{x}^*, t) \, d\mathbf{x}^*
+    \overline{\phi}(\mathbf{x}, t) = \int_D G(\mathbf{x} - \mathbf{y}, \Delta) \phi(\mathbf{y}, t) \, d\mathbf{y}
   \end{equation}
   where $G$ is the filter function, and $\Delta$ is the filter width.\\
   Eddies larger than the filter width are computed numerically, while the smaller
-  eddies are calculated after using a model, because they are more homogeneous by nature.
+  eddies are calculated after using a model, because they are more homogeneous by nature \cite{zouLARGEEDDYSIMULATION2006}.
   % In LES eddies significantly larger than ∆ are calculated in detail so their statistical 
   % properties are computable. Eddies smaller than ∆ are treated by turbulence transport modeling
   % techniques so that the information available about them includes only the single-point quantities 
   % like the kinetic energy at subgrid scales and the dissipation at subgrid scales.
-  after using a model.
 \end{frame}
-%------------------------------------------3 min
+% ------------------------------------------3 min
 \begin{frame}
 \frametitle{The model}
-There are some possible functions for $G$, in spatial domain and in Fourier domain.
-  \begin{equatiion}
-    1=1+x
-  \end{equatiion}
+There are some possible functions for $G$, in spatial domain and in Fourier domain.\\
+For example, the Gaussian filter in spatial domain \cite{zouLARGEEDDYSIMULATION2006}:
+\begin{equation}
+  G_r(\mathbf{x} - \mathbf{y}, \Delta) = \left( \frac{6}{\pi \Delta^2} \right)^{3/2} 
+  \exp \left[ -6 \frac{|\mathbf{x} - \mathbf{y}|^2}{\Delta^2} \right] 
+\end{equation}
+For the velocity:
+\begin{equation}
+  \overline{\mathbf{u}} =\int_D G_r(\mathbf{x} - \mathbf{y}, \Delta) \cdot \mathbf{u}(\mathbf{y},t)
+\end{equation}
+And similarly for Reynolds decomposition:
+\begin{equation}
+  \mathbf{u}^{'} \equiv \mathbf{u}-\overline{\mathbf{u}} 
+\end{equation}
+
 \end{frame}
-%------------------------------------------2.5
+%------------------------------------------1
 \begin{frame}
-  \frametitle{Example}
-\end{frame}
-%------------------------------------------2.5
-\begin{frame}
-  \frametitle{Equations}
+  \frametitle{The model}
+  \begin{figure}[ht] % 'ht' specifies the preferred placement of the figure
+    \centering
+    \includegraphics[width=1\textwidth]{filtered_velocity.png} % Replace with your image filename
+    \caption{Velocity and filtered velocity \cite{zhiyinLargeeddySimulationPresent2015}} % Caption for the figure
+    \label{filtered_velocity} % Label for referencing
+  \end{figure}
 \end{frame}
 
-%------------------------------------------2.5
+%------------------------------------------2
+\begin{frame}
+  \frametitle{Filtered Equations}
+ \begin{equation}
+  \frac{\partial \overline{u}_j}{\partial x_j}=0
+ \end{equation}
+
+  \begin{equation}
+    \rho \left( \frac{\partial \overline{u}_i}{\partial t} + 
+    \frac{\partial \overline{u}_i \overline{u}_j}{\partial x_j} \right)= 
+     \rho f_i -\frac{\partial \overline{u}_i \overline{u}_j}{\partial x_j} 
+     + \frac{\partial (2 \mu \overline{S}_{ij})}{\partial x_j} 
+     + \frac{\partial \tau_{ij, \text{SGS}}}{\partial x_j}
+  \end{equation}
+
+  
+  \begin{equation}
+    \rho \left( \frac{\partial \overline{h}}{\partial t} +
+     \frac{\partial \overline{h} \overline{u}_j}{\partial x_j} \right) 
+     =  \frac{D \overline{p}}{D t} + \rho f_j \overline{u}_j -
+      \frac{\partial \overline{q}_j}{\partial x_j} + \dot{q} +
+      \frac{\partial H_j}{\partial x_j}
+  \end{equation}
+where 
+\begin{equation}
+  \tau_{ij, \text{SGS}}=-\rho (\overline{u_i u_j}-\overline{u}_i \overline{u}_j)
+\end{equation}
+\begin{equation}
+  H_j=-\rho((\overline{h u_j}-\overline{h} \overline{u}_j))
+\end{equation}
+
+\end{frame}
+
+%------------------------------------------2
+\begin{frame}
+  \frametitle{Modeling the SGS terms}
+Both $\tau_{ij, \text{SGS}}$ and $H_j$ require modeling.\\
+Eddy viscosity is modeled using Boussinesq hypothesis to calculate eddy viscosity \cite{zouLARGEEDDYSIMULATION2006}:
+\begin{equation}
+  \tau_{ij,\text{SGS}} - \frac{1}{3}\delta_{ij}\tau_{kk,SGS} =  2\rho v_T \overline{S}_{ij}
+\end{equation}
+The SGS heat flux is modeled with gradient-diffusion model\cite{zouLARGEEDDYSIMULATION2006}:
+\begin{equation}
+  H_j = \frac{\mu_T}{\text{Pr}_T} \frac{\partial \overline{h}}{\partial x_j}
+\end{equation}
+\end{frame}
+
+
+
 \begin{frame}
   \bibliographystyle{plain}
   \bibliography{MyLibrary} 
