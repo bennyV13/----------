@@ -61,8 +61,7 @@
 \begin{frame}
 \frametitle{The problam}
 \begin{equation}
-  \frac{\partial \mathbf{u}}{\partial t} + (\mathbf{u} \cdot \nabla)
-   \mathbf{u} = -\frac{1}{\rho} \nabla p + \nu \nabla^2 \mathbf{u} + \mathbf{f}
+  \frac{\partial \mathbf{u}}{\partial t} + (\mathbf{u} \cdot \nabla) \mathbf{u} = -\frac{1}{\rho} \nabla p + \nu \nabla^2 \mathbf{u} + \mathbf{f}
   \end{equation}
 \end{frame}
 %------------------------------------------3 min, this is the why
@@ -71,15 +70,13 @@
   \begin{itemize}
     \item DNS. 
       \begin{itemize}
-        \item Heavy computational cost, proportional to $Re^{11/4}$ \cite{zouLARGEEDDYSIMULATION}.
+        \item Heavy computational cost, proportional to $Re^{11/4}$ \cite{foxLargeEddySimulationToolsMultiphase}.
         \item Sensitive to IC.
-        \item High order schemes are needed, which are not flexible 
-        to different geometries (pseudo-spectral methods).
+        \item High order schemes are needed, which are not flexible to different geometries (pseudo-spectral methods).
       \end{itemize}
     \item RANS + some model for Reynolds stresses. 
       \begin{itemize}
-        \item Tries to take in wide range of scales. Small scales depend 
-        more on $\nu$, while large scale depend more on BC.
+        \item Tries to take in wide range of scales. Small scales depend more on $\nu$, while large scale depend more on BC.
         \item The constants for this model are sometimes gard to optimize.  
       \end{itemize}
     \item The combination of the two $\rightarrow$ \textbf{LES}
@@ -90,43 +87,23 @@
 \begin{frame}
   \frametitle{About LES}
   \begin{itemize}
-    \item Invented by Dr. Joseph Smagorinsky (1924-2005), meteorologist and
-     founding director of NOAA’s Geophysical Fluid Dynamics Laboratory 
-     \cite{zhiyinLargeeddySimulationPresent2015} 
+    \item Dr. Joseph Smagorinsky (1924-2005), meteorologist and
+     founding director of NOAA’s Geophysical Fluid Dynamics Laboratory \cite{zhiyinLargeeddySimulationPresent2015} 
      %was a pioneer in combining computers and mathematical models
-    \item The idea is to solve the large scales and model the small scales. 
-    \item The computational cost is proportional to $Re^{9/4}$,
-     one order of magnitude less than DNS.
+    \item RANS + some model for Reynolds stresses
+    \item The combination of the two -> LES
   \end{itemize}
 \end{frame}
+%------------------------------------------
+
+%https://celebrating200years.noaa.gov/historymakers/Smagorinsky/welcome.html
 %------------------------------------------3 min
 \begin{frame}
-  \frametitle{The Model}
-  Instead of the Reynolds decomposition, we use the filter decomposition:
-  \begin{equation}
-  \phi(\mathbf{x},t) = \underbrace{\bar{\phi}(\mathbf{x},t)}_{large scale}
-   + \underbrace{\phi'(\mathbf{x},t)}_{small scale}
-  \end{equation}
-  The filtering operation is defined as:
-\begin{equation}
-    \overline{\phi}(\mathbf{x}, t) = \int_D G(\mathbf{x} - \mathbf{x}^*, \Delta) \phi(\mathbf{x}^*, t) \, d\mathbf{x}^*
-  \end{equation}
-  where $G$ is the filter function, and $\Delta$ is the filter width.\\
-  Eddies larger than the filter width are computed numerically, while the smaller
-  eddies are calculated after using a model, because they are more homogeneous by nature.
-  % In LES eddies significantly larger than ∆ are calculated in detail so their statistical 
-  % properties are computable. Eddies smaller than ∆ are treated by turbulence transport modeling
-  % techniques so that the information available about them includes only the single-point quantities 
-  % like the kinetic energy at subgrid scales and the dissipation at subgrid scales.
-  after using a model.
+\frametitle{The Model}
 \end{frame}
 %------------------------------------------3 min
 \begin{frame}
-\frametitle{The model}
-There are some possible functions for $G$, in spatial domain and in Fourier domain.
-  \begin{equatiion}
-    1=1+x
-  \end{equatiion}
+\frametitle{Filtering}
 \end{frame}
 %------------------------------------------2.5
 \begin{frame}
