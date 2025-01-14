@@ -1,4 +1,5 @@
 \documentclass{beamer}
+
 \usetheme{default}
 \usepackage{hyperref}
 \usepackage{bookmark}
@@ -69,69 +70,72 @@
 \begin{frame}
   \frametitle{Possible solutions and their fault}
   \begin{itemize}
-    \item DNS. 
+    \item<1-> DNS. 
       \begin{itemize}
-        \item Heavy computational cost, proportional to $Re^{11/4}$ \cite{zouLARGEEDDYSIMULATION2006}.
-        \item Sensitive to IC.
-        \item High order schemes are needed, which are not flexible 
+        \item<2-> Heavy computational cost, proportional to $Re^{11/4}$ \cite{zouLARGEEDDYSIMULATION2006}.
+        \item<3-> Sensitive to IC.
+        \item<4-> High order schemes are needed, which are not flexible 
         to different geometries (pseudo-spectral methods).
       \end{itemize}
-    \item RANS + some model for Reynolds stresses. 
+    \item<5-> RANS + some model for Reynolds stresses. 
       \begin{itemize}
-        \item Tries to take in wide range of scales. Small scales depend 
+        \item<6-> Tries to take in wide range of scales. Small scales depend 
         more on $\nu$, while large scale depend more on BC.
-        \item The constants for this model are sometimes gard to optimize.  
+        \item<7-> The constants for this model are sometimes hard to optimize.  
       \end{itemize}
-    \item The combination of the two $\rightarrow$ \textbf{LES}
-  \end{itemize}
+    \item<8-> The combination of the two $\rightarrow$ \textbf{LES}
+\end{itemize}
 \end{frame}
 
 %------------------------------------------2 min
 \begin{frame}
   \frametitle{About LES}
   \begin{itemize}
-    \item Invented by Dr. Joseph Smagorinsky (1924-2005), meteorologist and
-     founding director of NOAA’s Geophysical Fluid Dynamics Laboratory 
-     \cite{zhiyinLargeeddySimulationPresent2015} 
-     %was a pioneer in combining computers and mathematical models
-    \item The idea is to solve the large scales and model the small scales. 
-    \item The computational cost is proportional to $Re^{13/7}$,
-     one order of magnitude less than DNS \cite{choiGridpointRequirementsLarge2012}.
-  \end{itemize}
+    \item <1-> Invented by Dr. Joseph Smagorinsky (1924-2005), meteorologist and founding director of NOAA’s
+     Geophysical Fluid Dynamics Laboratory \cite{zhiyinLargeeddySimulationPresent2015} 
+    \item <2-> The idea is to solve the large scales and model the small scales. 
+    \item <3-> The computational cost is proportional to $Re^{13/7}$, one order of magnitude less than DNS \cite{choiGridpointRequirementsLarge2012}.
+\end{itemize}
 \end{frame}
 %------------------------------------------3 min
 \begin{frame}
   \frametitle{The Model}
+  \pause
   Instead of the Reynolds decomposition, we use the filter decomposition:
+  \pause
   \begin{equation}
   \phi(\mathbf{x},t) = \underbrace{\overline{\phi}(\mathbf{x},t)}_{\text{resolved scale}}
    + \underbrace{\phi'(\mathbf{x},t)}_{\text{subgrid scale}}
   \end{equation}
+  \pause
   The filtering operation is defined as:
 \begin{equation}
     \overline{\phi}(\mathbf{x}, t) = \int_D G(\mathbf{x} - \mathbf{y}, \Delta) \phi(\mathbf{y}, t) \, d\mathbf{y}
   \end{equation}
+  \pause
   where $G$ is the filter function, and $\Delta$ is the filter width.\\
+  \pause
   Eddies larger than the filter width are computed numerically, while the smaller
   eddies are calculated after using a model, because they are more homogeneous by nature \cite{zouLARGEEDDYSIMULATION2006}.
-  % In LES eddies significantly larger than ∆ are calculated in detail so their statistical 
-  % properties are computable. Eddies smaller than ∆ are treated by turbulence transport modeling
-  % techniques so that the information available about them includes only the single-point quantities 
-  % like the kinetic energy at subgrid scales and the dissipation at subgrid scales.
+  
 \end{frame}
 % ------------------------------------------3 min
 \begin{frame}
 \frametitle{The model}
+\pause
 There are some possible functions for $G$, in spatial domain and in Fourier domain.\\
-For example, the Gaussian filter in spatial domain \cite{zouLARGEEDDYSIMULATION2006}:
+\pause
+The Gaussian filter in spatial domain \cite{zouLARGEEDDYSIMULATION2006}:
 \begin{equation}
   G_r(\mathbf{x} - \mathbf{y}, \Delta) = \left( \frac{6}{\pi \Delta^2} \right)^{3/2} 
   \exp \left[ -6 \frac{|\mathbf{x} - \mathbf{y}|^2}{\Delta^2} \right] 
 \end{equation}
+\pause
 For the velocity:
 \begin{equation}
   \overline{\mathbf{u}} =\int_D G_r(\mathbf{x} - \mathbf{y}, \Delta) \cdot \mathbf{u}(\mathbf{y},t)
 \end{equation}
+\pause
 And similarly for Reynolds decomposition:
 \begin{equation}
   \mathbf{u}^{'} \equiv \mathbf{u}-\overline{\mathbf{u}} 
@@ -141,6 +145,8 @@ And similarly for Reynolds decomposition:
 %------------------------------------------1
 \begin{frame}
   \frametitle{The model}
+  \pause
+  Graphically, the filter operation looks like this:
   \begin{figure}[ht] % 'ht' specifies the preferred placement of the figure
     \centering
     \includegraphics[width=1\textwidth]{filtered_velocity.png} % Replace with your image filename
@@ -152,9 +158,11 @@ And similarly for Reynolds decomposition:
 %------------------------------------------2
 \begin{frame}
   \frametitle{Filtered Equations}
+  \pause
  \begin{equation}
   \frac{\partial \overline{u}_j}{\partial x_j}=0
  \end{equation}
+ \pause
 
   \begin{equation}
     \rho \left( \frac{\partial \overline{u}_i}{\partial t} + 
@@ -164,6 +172,7 @@ And similarly for Reynolds decomposition:
      + \frac{\partial \tau_{ij, \text{SGS}}}{\partial x_j}
   \end{equation}
 
+  \pause
   
   \begin{equation}
     \rho \left( \frac{\partial \overline{h}}{\partial t} +
@@ -172,10 +181,17 @@ And similarly for Reynolds decomposition:
       \frac{\partial \overline{q}_j}{\partial x_j} + \dot{q} +
       \frac{\partial H_j}{\partial x_j}
   \end{equation}
-where 
+  \pause
+\end{frame}
+
+  \begin{frame}
+    \frametitle{Filtered Equations}
+  \pause
+    where 
 \begin{equation}
   \tau_{ij, \text{SGS}}=-\rho (\overline{u_i u_j}-\overline{u}_i \overline{u}_j)
 \end{equation}
+\pause
 \begin{equation}
   H_j=-\rho((\overline{h u_j}-\overline{h} \overline{u}_j))
 \end{equation}
@@ -185,18 +201,26 @@ where
 %------------------------------------------2
 \begin{frame}
   \frametitle{Modeling the SGS terms}
-Both $\tau_{ij, \text{SGS}}$ and $H_j$ require modeling.\\
-Eddy viscosity is modeled using Boussinesq hypothesis to calculate eddy viscosity \cite{zouLARGEEDDYSIMULATION2006}:
-\begin{equation}
+  \pause
+
+  Both $\tau_{ij, \text{SGS}}$ and $H_j$ require modeling.\\
+  \pause
+
+  Eddy viscosity is modeled using Boussinesq hypothesis to calculate eddy viscosity \cite{zouLARGEEDDYSIMULATION2006}:
+  \pause
+
+  \begin{equation}
   \tau_{ij,\text{SGS}} - \frac{1}{3}\delta_{ij}\tau_{kk,SGS} =  2\rho v_T \overline{S}_{ij}
 \end{equation}
+\pause
+
 The SGS heat flux is modeled with gradient-diffusion model\cite{zouLARGEEDDYSIMULATION2006}:
+\pause
+
 \begin{equation}
   H_j = \frac{\mu_T}{\text{Pr}_T} \frac{\partial \overline{h}}{\partial x_j}
 \end{equation}
 \end{frame}
-
-
 
 \begin{frame}
   \bibliographystyle{plain}
